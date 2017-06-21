@@ -1,11 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
-import './index.css';
+import { render } from 'react-dom'
+import { createStore } from 'redux'
+import Root from './components/root/Root'
+import 'semantic-ui-css/semantic.min.css';
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+let store = createStore(() => {})
+
+render (
+  <Root store={store} />,
+  document.getElementById('root')
+)
 
 if (module.hot) {
   module.hot.accept()

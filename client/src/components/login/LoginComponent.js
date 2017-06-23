@@ -48,7 +48,7 @@ class LoginComponent extends Component {
   }
 
   render() {
-    const loginStyle = {maxWidth: '30rem', margin: 'auto', marginTop: '5rem'}
+    const loginStyle = {maxWidth: '35rem', margin: 'auto', marginTop: '5rem'}
     const { email, password } = this.state
     const { authError, authErrorMessage, apiKey } = this.props
 

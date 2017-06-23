@@ -5,8 +5,6 @@ import { Provider } from 'react-redux'
 import Account from './containers/Account'
 import Register from './containers/Register'
 import Login from './containers/Login'
-import Todos from './containers/Todos'
-import User from './containers/User'
 
 const Root = ({ store }) => {
   const loggedIn = store.getState().auth.apiKey !== null

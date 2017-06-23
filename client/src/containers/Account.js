@@ -5,7 +5,7 @@ import AccountComponent from '../components/account/AccountComponent'
 
 const mapStateToProps = (state, ownProps) => ({
   apiKey: state.auth.apiKey,
-  todos: state.todos,
+  todos: state.todos.todos,
 })
 
 const mapDispatchToProps = ({

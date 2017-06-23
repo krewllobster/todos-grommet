@@ -14,4 +14,4 @@ const mapDispatchToProps = ({
 
 const User = connect(mapStateToProps, mapDispatchToProps)(UserComponent)
 
-export default UserComponent
+export default User

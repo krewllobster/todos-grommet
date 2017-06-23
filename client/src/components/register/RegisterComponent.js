@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom'
-import { Grid, Segment, Input, Button, Header, Image, Form, Message } from 'semantic-ui-react';
+import { Grid, Segment, Button, Header, Image, Form, Message } from 'semantic-ui-react';
 
 
 class RegisterComponent extends Component {

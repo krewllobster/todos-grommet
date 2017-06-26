@@ -1,9 +1,7 @@
 import { connect } from 'react-redux'
 import {
-  submitRegister,
-  submitRegisterSuccess,
-  submitRegisterFailure
-} from '../actions/authActions.js'
+  fetchRegister
+} from '../actions/registerActions.js'
 
 import RegisterComponent from '../components/register/RegisterComponent'
 
@@ -15,9 +13,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = ({
-  submitRegister: submitRegister,
-  submitRegisterSuccess: submitRegisterSuccess,
-  submitRegisterFailure: submitRegisterFailure,
+  fetchRegister: fetchRegister,
 })
 
 const Register = connect(mapStateToProps, mapDispatchToProps)(RegisterComponent)

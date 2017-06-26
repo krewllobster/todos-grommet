@@ -34,18 +34,7 @@ class RegisterComponent extends Component {
       return url + `${key}=${params[key]}&`
     }, ''))
 
-    this.props.submitRegister()
-    fetch(`/register?${urlQueryParams}`, {
-      method: 'post',
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.auth_token) {
-        this.props.submitRegisterSuccess(data.auth_token)
-      } else {
-        this.props.submitRegisterFailure(data.message)
-      }
-    })
+    this.props.fetchRegister(urlQueryParams)
   }
 
   handleChange(e, { name, value }) {

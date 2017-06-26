@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { NavLink, Link, Redirect, Route, Switch } from 'react-router-dom'
-import { Container, Sidebar, Menu, Icon, Dropdown, Segment, Dimmer, List, Form, Input } from 'semantic-ui-react'
+import PropTypes from 'prop-types'
+import { Link, Redirect, Route, Switch } from 'react-router-dom'
+import { Container, Sidebar, Menu, Icon, Segment, Form, Input } from 'semantic-ui-react'
 import TodoList from '../todos/TodoList'
 import User from '../../containers/User'
 import SingleTodo from '../todos/SingleTodo'
@@ -11,7 +12,7 @@ class AccountComponent extends Component {
     super(props)
 
     this.state={
-      visible: false,
+      visible: true,
     }
 
     this.toggleVisible = this.toggleVisible.bind(this)
@@ -42,8 +43,6 @@ class AccountComponent extends Component {
           style={{height: '100vh'}}
           onBlur={this.toggleVisible}
           as={Segment}
-          fluid
-          fitted
         >
           <Sidebar as={Segment.Group}
             visible={visible}
@@ -52,9 +51,9 @@ class AccountComponent extends Component {
             color='teal'
           >
             <Segment.Group horizontal>
-              <Segment horizontal color='teal' inverted as={Form} >
+              <Segment color='teal' inverted as={Form} >
                 <Form.Field>
-                  <Input size='large' type='text' icon='plus' iconposition='right' />
+                  <Input size='large' type='text' icon='plus' />
                 </Form.Field>
               </Segment>
               {todos.map(todo => {
@@ -81,8 +80,7 @@ class AccountComponent extends Component {
           </Sidebar>
           <Sidebar.Pusher
             as={Container}
-            width={'mobile only'}
-            style={{maxHeight: '100vh', overflow: 'scroll', width: '100%'}} fluid>
+            style={{maxHeight: '100vh', overflow: 'scroll', width: '100%' }} fluid>
             <Menu icon>
               <Menu.Item onClick={this.toggleVisible}>
                 <Icon color='teal' size='large' name='list layout' />
@@ -90,8 +88,10 @@ class AccountComponent extends Component {
             </Menu>
             <Container fluid>
               <Switch>
-                <Route path="/account/todos" component={TodoList} />
-                <Route path={`${match.url}/:id`} component={SingleTodo} />
+                <Redirect exact from='/account' to='/account/todos' />
+                <Route exact path="/account/todos" component={TodoList} />
+                <Route exact path="/account/settings" component={User} />
+                <Route path="/account/todos/:id" component={SingleTodo} />
               </Switch>
             </Container>
           </Sidebar.Pusher>
@@ -99,6 +99,12 @@ class AccountComponent extends Component {
       </div>
     );
   }
+}
+
+AccountComponent.PropTypes = {
+  apiKey: PropTypes.string.isRequired,
+  todos: PropTypes.array.isRequired,
+  logout: PropTypes.func.isRequired,
 }
 
 export default AccountComponent;

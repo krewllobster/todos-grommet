@@ -28,19 +28,7 @@ class LoginComponent extends Component {
       return url + `${key}=${params[key]}&`
     }, ''))
 
-    this.props.submitLogin()
-    fetch(`auth/login?${urlQueryParams}`, {
-      method: 'post',
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.auth_token) {
-        this.props.submitLoginSuccess(data.auth_token)
-      } else {
-        console.log(data)
-        this.props.submitLoginFailure(data.message)
-      }
-    })
+    this.props.fetchLogin(urlQueryParams)
   }
 
   handleChange(e, { name, value }) {

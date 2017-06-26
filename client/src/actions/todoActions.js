@@ -1,15 +1,17 @@
-export const GET_TODOS = 'GET_TODOS'
+export const GET_TODOS_REQUEST = 'GET_TODOS_REQUEST'
 export const GET_TODOS_SUCCESS = 'GET_TODOS_SUCCESS'
 export const GET_TODOS_FAILURE = 'GET_TODOS_FAILURE'
-export const POST_TODO = 'POST_TODOS'
+export const POST_TODO_REQUEST = 'POST_TODOS_REQUEST'
 export const POST_TODO_SUCCESS = 'POST_TODOS_SUCCESS'
 export const POST_TODO_FAILURE = 'POST_TODOS_FAILURE'
-export const DEL_TODO = 'DEL_TODO'
+export const DEL_TODO_REQUEST = 'DEL_TODO_REQUEST'
 export const DEL_TODO_SUCCESS = 'DEL_TODO_SUCCESS'
 export const DEL_TODO_FAILURE = 'DEL_TODO_FAILURE'
 
-export const delTodo = (id) => ({
-  type: DEL_TODO,
+
+
+export const delTodoRequest = (id) => ({
+  type: DEL_TODO_REQUEST,
 })
 
 export const delTodoSuccess = (status, id) => ({
@@ -23,8 +25,8 @@ export const delTodoFailure = (status) => ({
   status,
 })
 
-export const getTodos = () => ({
-  type: GET_TODOS,
+export const getTodosRequest = () => ({
+  type: GET_TODOS_REQUEST,
 })
 
 export const getTodosSuccess = (todoList) => ({
@@ -37,8 +39,8 @@ export const getTodosFailure = (status) => ({
   status,
 })
 
-export const postTodo = () => ({
-  type: POST_TODO,
+export const postTodoRequest = () => ({
+  type: POST_TODO_REQUEST,
 })
 
 export const postTodoSuccess = (todo) => ({

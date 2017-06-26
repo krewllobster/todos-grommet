@@ -1,13 +1,15 @@
 import {
-  SUBMIT_REGISTER,
-  SUBMIT_REGISTER_SUCCESS,
-  SUBMIT_REGISTER_FAILURE,
-  SUBMIT_LOGIN,
-  SUBMIT_LOGIN_SUCCESS,
-  SUBMIT_LOGIN_FAILURE,
-  LOGOUT,
-} from '../actions/authActions.js'
+  FETCH_REGISTER_REQUEST,
+  FETCH_REGISTER_SUCCESS,
+  FETCH_REGISTER_FAILURE,
+} from '../actions/registerActions'
 
+import {
+  FETCH_LOGIN_REQUEST,
+  FETCH_LOGIN_SUCCESS,
+  FETCH_LOGIN_FAILURE,
+  LOGOUT,
+} from '../actions/loginActions.js'
 
 const saveJWT = (JWT) => {
   localStorage.setItem('todo_auth_token', JSON.stringify(JWT))
@@ -19,9 +21,9 @@ const removeJWT = () => {
 
 const auth = (state = {}, action) => {
   switch (action.type) {
-    case SUBMIT_REGISTER:
+    case FETCH_REGISTER_REQUEST:
       return {...state, loading: true}
-    case SUBMIT_REGISTER_SUCCESS:
+    case FETCH_REGISTER_SUCCESS:
       saveJWT(action.apiKey)
       return {
         ...state,
@@ -30,18 +32,18 @@ const auth = (state = {}, action) => {
         authErrorMessage: '',
         apiKey: action.apiKey,
       }
-    case SUBMIT_REGISTER_FAILURE:
+    case FETCH_REGISTER_FAILURE:
       return {
         ...state,
         loading: false,
         authError: true,
         authErrorMessage: action.authErrorMessage,
       }
-    case SUBMIT_LOGIN:
+    case FETCH_LOGIN_REQUEST:
       return {
         ...state, loading: true
       }
-    case SUBMIT_LOGIN_SUCCESS:
+    case FETCH_LOGIN_SUCCESS:
       saveJWT(action.apiKey)
       return {
         ...state,
@@ -50,12 +52,12 @@ const auth = (state = {}, action) => {
         authErrorMessage: '',
         apiKey: action.apiKey,
       }
-    case SUBMIT_LOGIN_FAILURE:
+    case FETCH_LOGIN_FAILURE:
       return {
         ...state,
         loading: false,
         authError: true,
-        authErrorMessage: action.message,
+        authErrorMessage: action.authErrorMessage,
       }
     case LOGOUT:
       removeJWT()

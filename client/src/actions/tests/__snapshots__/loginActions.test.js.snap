@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+Object {
+  "type": "FETCH_LOGIN_REQUEST",
+}
+`;
+
+exports[` 2`] = `
+Object {
+  "apiKey": "fake_auth_token",
+  "type": "FETCH_LOGIN_SUCCESS",
+}
+`;
+
+exports[` 3`] = `
+Object {
+  "authErrorMessage": "fake_auth_error_message",
+  "type": "FETCH_LOGIN_FAILURE",
+}
+`;
+
+exports[` 4`] = `
+Object {
+  "type": "LOGOUT",
+}
+`;

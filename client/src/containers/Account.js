@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { logout } from '../actions/authActions.js'
+import { logout } from '../actions/loginActions.js'
 import { withRouter } from 'react-router-dom'
 import AccountComponent from '../components/account/AccountComponent'
 

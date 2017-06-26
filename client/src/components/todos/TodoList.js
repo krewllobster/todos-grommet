@@ -1,7 +1,6 @@
 import React from 'react'
-import SingleTodo from './SingleTodo'
 
-const TodoList = ({todos}) => {
+const TodoList = () => {
 
   return (
     <div>

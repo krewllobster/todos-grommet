@@ -1,10 +1,8 @@
 import { connect } from 'react-redux'
 import LoginComponent from '../components/login/LoginComponent'
 import {
-  submitLogin,
-  submitLoginSuccess,
-  submitLoginFailure
-} from '../actions/authActions.js'
+  fetchLogin
+} from '../actions/loginActions.js'
 
 const mapStateToProps = (state, ownProps) => ({
   authError: state.auth.authError,
@@ -14,9 +12,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = ({
-  submitLogin: submitLogin,
-  submitLoginSuccess: submitLoginSuccess,
-  submitLoginFailure: submitLoginFailure,
+  fetchLogin: fetchLogin,
 })
 
 const Login = connect(mapStateToProps, mapDispatchToProps)(LoginComponent)

@@ -1,18 +1,17 @@
 import {
-  GET_TODOS,
+  GET_TODOS_REQUEST,
   GET_TODOS_SUCCESS,
   GET_TODOS_FAILURE,
-  POST_TODO,
+  POST_TODO_REQUEST,
   POST_TODO_SUCCESS,
   POST_TODO_FAILURE,
-  DEL_TODO,
+  DEL_TODO_REQUEST,
   DEL_TODO_SUCCESS,
   DEL_TODO_FAILURE,
 } from '../actions/todoActions.js'
 
 const removeTodo = (id, items) => {
-  const pos = items.indexOf(id)
-  return [...items].splice(pos, 1)
+  return [...items.filter(item => item.id !== id)]
 }
 
 const todos = (state = {
@@ -23,13 +22,12 @@ const todos = (state = {
   lastUpdated: 0,
 }, action) => {
   switch (action.type) {
-    case DEL_TODO:
+    case DEL_TODO_REQUEST:
       return {...state, posting: true}
     case DEL_TODO_SUCCESS:
       return {
         ...state,
         posting: false,
-        status: action.status,
         todos: removeTodo(action.id, state.todos)
       }
     case DEL_TODO_FAILURE:
@@ -38,7 +36,7 @@ const todos = (state = {
         posting: false,
         status: action.status,
       }
-    case GET_TODOS:
+    case GET_TODOS_REQUEST:
       return {...state, loading: true}
     case GET_TODOS_SUCCESS:
       return {
@@ -53,7 +51,7 @@ const todos = (state = {
         loading: false,
         status: action.status,
       }
-    case POST_TODO:
+    case POST_TODO_REQUEST:
       return {...state, posting: true}
     case POST_TODO_SUCCESS:
       return {

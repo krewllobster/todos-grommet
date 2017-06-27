@@ -1,7 +1,6 @@
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
 import * as actions from '../loginActions'
+import mockStore from 'redux-mock-store'
 import {
   FETCH_LOGIN_REQUEST,
   LOGOUT,
@@ -9,66 +8,53 @@ import {
   FETCH_LOGIN_SUCCESS,
 } from '../loginActions'
 
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
-
-const mockResultSuccess = {
-  auth_token: 'asdf'
-}
-
-const mockResultFailure = {
-  message: 'boo'
-}
-
-const urlQueryParams = 'email=test@test.com&password=test'
-
 describe('async-actions', () => {
-  it('calls login request and success action if response was successful', () => {
 
+  const params = 'email=test@test.com&password=test'
+
+  afterEach(() => {
+    fetchMock.restore()
+  })
+
+  it('should handle FETCH_LOGIN_FAILURE action', () => {
+    const store = mockStore({auth: {authErrorMessage: null}})
     fetchMock.postOnce(
-      `auth/login?${urlQueryParams}`,
-      mockResultSuccess
+      `/auth/login?${params}`,
+      { message: 'invalid credentials'}
     )
-
-    const expectedActions = [
-      { type: FETCH_LOGIN_REQUEST },
-      { type: FETCH_LOGIN_SUCCESS, apiKey: 'asdf' }
-    ]
-
-    const store = mockStore({ auth: { apiKey: null} })
-
-    return store.dispatch(actions.fetchLogin(urlQueryParams))
-      .then((data) => {
-        expect(store.getActions()).toEqual(expectedActions)
+    return store.dispatch(actions.fetchLogin(params))
+      .then(() => {
+        expect(store.getActions()).toMatchSnapshot()
       })
   })
 
-  it('calls login request and failure action if response was unsuccessful', () => {
-
+  it('should handle FETCH_LOGIN_SUCCESS action', () => {
+    const store = mockStore({auth: {apiKey: null}})
     fetchMock.postOnce(
-      `auth/login?${urlQueryParams}`,
-      mockResultFailure
+      `/auth/login?${params}`,
+      { auth_token: 'asdf'}
     )
-
-    const expectedActions = [
-      { type: FETCH_LOGIN_REQUEST },
-      { type: FETCH_LOGIN_FAILURE, authErrorMessage: 'boo'}
-    ]
-
-    const store = mockStore({ auth: { authErrorMessage: ''} })
-
-    return store.dispatch(actions.fetchLogin(urlQueryParams))
-      .then((data) => {
-        expect(store.getActions()).toEqual(expectedActions)
+    return store.dispatch(actions.fetchLogin(params))
+      .then(() => {
+        expect(store.getActions()).toMatchSnapshot()
       })
-
   })
 })
 
 describe('actions', () => {
-  const store=mockStore({})
-  expect(store.dispatch(actions.fetchLoginRequest())).toMatchSnapshot()
-  expect(store.dispatch(actions.fetchLoginSuccess('fake_auth_token'))).toMatchSnapshot()
-  expect(store.dispatch(actions.fetchLoginFailure('fake_auth_error_message'))).toMatchSnapshot()
-  expect(store.dispatch(actions.logout())).toMatchSnapshot()
+  it('creates fetch login request action', () => {
+    expect(actions.fetchLoginRequest()).toMatchSnapshot()
+  })
+
+  it('creates fetch login success action', () => {
+    expect(actions.fetchLoginSuccess('fake_apiKey')).toMatchSnapshot()
+  })
+
+  it('creates fetch login failure action', () => {
+    expect(actions.fetchLoginFailure('fake_authErrorMessage')).toMatchSnapshot()
+  })
+
+  it('creates logout action', () => {
+    expect(actions.logout()).toMatchSnapshot()
+  })
 })

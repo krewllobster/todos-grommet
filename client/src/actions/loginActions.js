@@ -25,7 +25,7 @@ export const fetchLogin = (urlQueryParams) => {
   return (dispatch) => {
     dispatch(fetchLoginRequest())
 
-    return fetch(`auth/login?${urlQueryParams}`, {
+    return fetch(`/auth/login?${urlQueryParams}`, {
       method: 'post',
     })
     .then(

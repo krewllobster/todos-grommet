@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link, Redirect, Route, Switch } from 'react-router-dom'
-import { Container, Sidebar, Menu, Icon, Segment, Form, Input } from 'semantic-ui-react'
+import { Container, Sidebar, Menu, Icon, Segment, Form, Button } from 'semantic-ui-react'
 import TodoList from '../todos/TodoList'
 import User from '../../containers/User'
 import SingleTodo from '../todos/SingleTodo'
@@ -13,27 +13,58 @@ class AccountComponent extends Component {
 
     this.state={
       visible: true,
+      title: '',
     }
 
     this.toggleVisible = this.toggleVisible.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
+  }
+
+  componentWillMount() {
+    this.props.fetchTodos(this.props.apiKey)
   }
 
   toggleVisible() {
     this.setState({visible: !this.state.visible})
   }
 
+  handleChange(e, {name, value}) {
+    this.setState({[name]: value})
+  }
+
+  handleDelete(e, {value}) {
+    this.props.delTodo({
+      apiKey: this.props.apiKey,
+      id: value,
+    })
+  }
+
+  handleSubmit(e) {
+
+    e.preventDefault()
+
+    this.props.postTodo({
+      apiKey: this.props.apiKey,
+      title: this.state.title,
+    })
+
+    this.setState({title: ''})
+  }
+
   render() {
 
-    const { apiKey, logout, todos, match } = this.props
-    const { visible } = this.state
+    const { authError, logout, todos } = this.props
+    const { visible, title } = this.state
 
     const botMenuStyle = {
       position: 'absolute',
       bottom: '0',
-      width: '100%'
+      width: '100%',
     }
 
-    if (apiKey === null) {
+    if (authError) {
       return <Redirect to='/login' />
     }
 
@@ -41,7 +72,6 @@ class AccountComponent extends Component {
       <div>
         <Sidebar.Pushable
           style={{height: '100vh'}}
-          onBlur={this.toggleVisible}
           as={Segment}
         >
           <Sidebar as={Segment.Group}
@@ -49,24 +79,51 @@ class AccountComponent extends Component {
             animation='push'
             width='wide'
             color='teal'
+            style={{maxHeight: '100vh'}}
           >
             <Segment.Group horizontal>
-              <Segment color='teal' inverted as={Form} >
-                <Form.Field>
-                  <Input size='large' type='text' icon='plus' />
-                </Form.Field>
+              <Segment color='teal' inverted as={Form}
+                onSubmit = {this.handleSubmit}
+                style={{height: '7%'}}
+              >
+                <Form.Input
+                  required
+                  size='large' type='text' icon='plus'
+                  name='title'
+                  value={title}
+                  placeholder='todo title'
+                  onChange={this.handleChange}
+                />
               </Segment>
-              {todos.map(todo => {
-                return (
-                  <Segment fluid color='teal' inverted key={todo.id}
-                    as={Link}
-                    to={`/account/todos/${todo.id}`}
-                  >
-                    {todo.title}
-                  </Segment>
-                )
-              })}
             </Segment.Group>
+
+            <div
+              style={{maxHeight: '84%', overflow: 'scroll'}}
+            >
+              <Segment.Group>
+                {todos.map(todo => {
+                  return (
+                    <Segment.Group horizontal key={todo.id}>
+                      <Segment
+                        key={todo.id}
+                        color='teal' inverted
+                        as={Link}
+                        to={`/account/todos/${todo.id}`}
+                        style={{width: '85%'}}
+                      >
+                        {todo.title}
+                        <Button floated='right' icon='close' size='mini'
+                          negative compact
+                          value={todo.id}
+                          onClick={this.handleDelete}
+                        />
+                      </Segment>
+                    </Segment.Group>
+                  )
+                })}
+              </Segment.Group>
+            </div>
+
             <Segment.Group style={botMenuStyle} horizontal>
               <Segment size='large' as={Link} to={{pathname: '/account/settings'}}>
                 <Icon name='options'/>

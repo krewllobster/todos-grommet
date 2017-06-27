@@ -61,12 +61,7 @@ const auth = (state = {}, action) => {
       }
     case LOGOUT:
       removeJWT()
-      return {
-        ...state,
-        loading: false,
-        authError: false,
-        apiKey: null,
-      }
+      return undefined
     default:
       return state
   }

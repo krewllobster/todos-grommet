@@ -14,9 +14,8 @@ export const delTodoRequest = (id) => ({
   type: DEL_TODO_REQUEST,
 })
 
-export const delTodoSuccess = (status, id) => ({
+export const delTodoSuccess = (id) => ({
   type: DEL_TODO_SUCCESS,
-  status,
   id,
 })
 
@@ -52,3 +51,68 @@ export const postTodoFailure = (status) => ({
   type: POST_TODO_FAILURE,
   status,
 })
+
+export const delTodo = ({apiKey, id}) => {
+  return (dispatch) => {
+    dispatch(delTodoRequest())
+
+    return fetch(`/todos/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`
+      }
+    })
+      .then(response => response.text())
+      .then(data => {
+        if (!data) {
+          dispatch(delTodoSuccess(id))
+        } else {
+          dispatch(delTodoFailure(data))
+        }
+      })
+  }
+}
+
+export const postTodo = ({apiKey, title}) => {
+  return (dispatch) => {
+    dispatch(postTodoRequest())
+
+    return fetch(`/todos?title=${title}`,{
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message) {
+          dispatch(postTodoFailure(data.message))
+        } else {
+          dispatch(postTodoSuccess(data))
+        }
+      })
+  }
+}
+
+export const getTodos = (apiKey) => {
+  return (dispatch) => {
+    dispatch(getTodosRequest())
+
+    return fetch('/todos', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`
+      }
+    })
+    .then(
+      response => response.json()
+    )
+    .then(json => {
+      if (json.status === 500 || json.message) {
+        dispatch(getTodosFailure(json.error))
+      } else {
+        dispatch(getTodosSuccess(json))
+      }
+    })
+  }
+}

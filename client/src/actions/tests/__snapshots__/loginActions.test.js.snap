@@ -1,27 +1,51 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`actions creates fetch login failure action 1`] = `
+Object {
+  "authErrorMessage": "fake_authErrorMessage",
+  "type": "FETCH_LOGIN_FAILURE",
+}
+`;
+
+exports[`actions creates fetch login request action 1`] = `
 Object {
   "type": "FETCH_LOGIN_REQUEST",
 }
 `;
 
-exports[` 2`] = `
+exports[`actions creates fetch login success action 1`] = `
 Object {
-  "apiKey": "fake_auth_token",
+  "apiKey": "fake_apiKey",
   "type": "FETCH_LOGIN_SUCCESS",
 }
 `;
 
-exports[` 3`] = `
-Object {
-  "authErrorMessage": "fake_auth_error_message",
-  "type": "FETCH_LOGIN_FAILURE",
-}
-`;
-
-exports[` 4`] = `
+exports[`actions creates logout action 1`] = `
 Object {
   "type": "LOGOUT",
 }
+`;
+
+exports[`async-actions should handle FETCH_LOGIN_FAILURE action 1`] = `
+Array [
+  Object {
+    "type": "FETCH_LOGIN_REQUEST",
+  },
+  Object {
+    "authErrorMessage": "invalid credentials",
+    "type": "FETCH_LOGIN_FAILURE",
+  },
+]
+`;
+
+exports[`async-actions should handle FETCH_LOGIN_SUCCESS action 1`] = `
+Array [
+  Object {
+    "type": "FETCH_LOGIN_REQUEST",
+  },
+  Object {
+    "apiKey": "asdf",
+    "type": "FETCH_LOGIN_SUCCESS",
+  },
+]
 `;

@@ -1,16 +1,12 @@
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
 import * as actions from '../registerActions'
+import mockStore from 'redux-mock-store'
 import {
   FETCH_REGISTER_REQUEST,
   FETCH_REGISTER_FAILURE,
   FETCH_REGISTER_SUCCESS,
 
 } from '../registerActions'
-
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
 
 const mockResultSuccess = {
   auth_token: 'asdf'

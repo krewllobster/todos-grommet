@@ -5,7 +5,6 @@ import React, { Component } from 'react'
 class SingleTodo extends Component {
 
   render() {
-
     return (
       <div>TodoList here</div>
     )

@@ -5,6 +5,7 @@ import { Container, Sidebar, Menu, Icon, Segment, Form, Button } from 'semantic-
 import TodoList from '../todos/TodoList'
 import User from '../../containers/User'
 import SingleTodo from '../todos/SingleTodo'
+import TodoMenuItem from './TodoMenuItem'
 
 class AccountComponent extends Component {
 
@@ -26,6 +27,10 @@ class AccountComponent extends Component {
     this.props.fetchTodos(this.props.apiKey)
   }
 
+  componentWillReceiveUpdate(nextProps) {
+    console.log(nextProps)
+  }
+
   toggleVisible() {
     this.setState({visible: !this.state.visible})
   }
@@ -34,10 +39,10 @@ class AccountComponent extends Component {
     this.setState({[name]: value})
   }
 
-  handleDelete(e, {value}) {
+  handleDelete(id) {
     this.props.delTodo({
       apiKey: this.props.apiKey,
-      id: value,
+      id,
     })
   }
 
@@ -54,7 +59,6 @@ class AccountComponent extends Component {
   }
 
   render() {
-
     const { authError, logout, todos } = this.props
     const { visible, title } = this.state
 
@@ -93,6 +97,7 @@ class AccountComponent extends Component {
                   value={title}
                   placeholder='todo title'
                   onChange={this.handleChange}
+                  maxLength='35'
                 />
               </Segment>
             </Segment.Group>
@@ -103,22 +108,11 @@ class AccountComponent extends Component {
               <Segment.Group>
                 {todos.map(todo => {
                   return (
-                    <Segment.Group horizontal key={todo.id}>
-                      <Segment
-                        key={todo.id}
-                        color='teal' inverted
-                        as={Link}
-                        to={`/account/todos/${todo.id}`}
-                        style={{width: '85%'}}
-                      >
-                        {todo.title}
-                        <Button floated='right' icon='close' size='mini'
-                          negative compact
-                          value={todo.id}
-                          onClick={this.handleDelete}
-                        />
-                      </Segment>
-                    </Segment.Group>
+                    <TodoMenuItem
+                      key={todo.id}
+                      todo={todo}
+                      handleDelete={this.handleDelete}
+                    />
                   )
                 })}
               </Segment.Group>
@@ -145,10 +139,9 @@ class AccountComponent extends Component {
             </Menu>
             <Container fluid>
               <Switch>
-                <Redirect exact from='/account' to='/account/todos' />
-                <Route exact path="/account/todos" component={TodoList} />
-                <Route exact path="/account/settings" component={User} />
                 <Route path="/account/todos/:id" component={SingleTodo} />
+                <Route path="/account/todos" component={TodoList} />
+                <Route path="/account/settings" component={User} />
               </Switch>
             </Container>
           </Sidebar.Pusher>

@@ -7,7 +7,7 @@ import Register from './containers/Register'
 import Login from './containers/Login'
 
 const Root = ({ store }) => {
-  const loggedIn = store.getState().auth.apiKey !== null
+  const loggedIn = store.getState().auth.apiKey === localStorage.getItem('todo_auth_token')
   return (
     <Provider store={store}>
       <Router>

@@ -7,10 +7,24 @@ export const POST_TODO_FAILURE = 'POST_TODOS_FAILURE'
 export const DEL_TODO_REQUEST = 'DEL_TODO_REQUEST'
 export const DEL_TODO_SUCCESS = 'DEL_TODO_SUCCESS'
 export const DEL_TODO_FAILURE = 'DEL_TODO_FAILURE'
+export const PUT_TODO_REQUEST = 'PUT_TODO_REQUEST'
+export const PUT_TODO_SUCCESS = 'PUT_TODO_SUCCESS'
+export const PUT_TODO_FAILURE = 'PUT_TODO_FAILURE'
 
+export const putTodoRequst = () => ({
+  type: PUT_TODO_REQUEST,
+})
 
+export const putTodoFailure = (status) => ({
+  type: PUT_TODO_FAILURE,
+})
 
-export const delTodoRequest = (id) => ({
+export const putTodoSuccess = (id) => ({
+  type: PUT_TODO_SUCCESS,
+  id,
+})
+
+export const delTodoRequest = () => ({
   type: DEL_TODO_REQUEST,
 })
 
@@ -52,6 +66,23 @@ export const postTodoFailure = (status) => ({
   status,
 })
 
+export const putTodo = ({apiKey, id, title}) => {
+  return (dispatch) => {
+    dispatch(delTodoRequest())
+
+    return fetch(`/todos/${id}?title=${title}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+      })
+  }
+}
+
 export const delTodo = ({apiKey, id}) => {
   return (dispatch) => {
     dispatch(delTodoRequest())
@@ -64,6 +95,7 @@ export const delTodo = ({apiKey, id}) => {
     })
       .then(response => response.text())
       .then(data => {
+        console.log(data)
         if (!data) {
           dispatch(delTodoSuccess(id))
         } else {
@@ -74,45 +106,34 @@ export const delTodo = ({apiKey, id}) => {
 }
 
 export const postTodo = ({apiKey, title}) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(postTodoRequest())
-
-    return fetch(`/todos?title=${title}`,{
+    const data = await fetch(`/todos?title=${title}`,{
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`
       }
     })
-      .then(response => response.json())
-      .then(data => {
-        if (data.message) {
-          dispatch(postTodoFailure(data.message))
-        } else {
-          dispatch(postTodoSuccess(data))
-        }
-      })
+    const response = await data.json()
+    response.message ?
+        dispatch(postTodoFailure(response.message))
+      : dispatch(postTodoSuccess(response))
   }
 }
 
 export const getTodos = (apiKey) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(getTodosRequest())
 
-    return fetch('/todos', {
+    const data = await fetch('/todos', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${apiKey}`
       }
     })
-    .then(
-      response => response.json()
-    )
-    .then(json => {
-      if (json.status === 500 || json.message) {
-        dispatch(getTodosFailure(json.error))
-      } else {
-        dispatch(getTodosSuccess(json))
-      }
-    })
+    const response = await data.json()
+    response.message ?
+      dispatch(getTodosFailure(response.error))
+      : dispatch(getTodosSuccess(response))
   }
 }

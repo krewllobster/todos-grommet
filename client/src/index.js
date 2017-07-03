@@ -1,14 +1,8 @@
 import React from 'react';
-import { render } from 'react-dom'
-import Root from './Root'
-import store from './Store'
-import 'semantic-ui-css/semantic.min.css'
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
 
-render (
-  <Root store={store} />,
-  document.getElementById('root')
-)
-
-if (module.hot) {
-  module.hot.accept()
-}
+ReactDOM.render(<App />, document.getElementById('root'));
+registerServiceWorker();
